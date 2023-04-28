@@ -1,20 +1,14 @@
 <template>
   <section>필터링 공간</section>
-  <section>코치 목록 공간</section>
+  <section>
+    <div class="controls">
+      <button>새로고침</button>
+      <router-link to="/register">코치 등록</router-link>
+    </div>
+    <ul>
+      코치 목록 공간
+    </ul>
+  </section>
 </template>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  font-family: 'Roboto', sans-serif;
-}
-
-body {
-  margin: 0;
-}
-</style>
+<style></style>
