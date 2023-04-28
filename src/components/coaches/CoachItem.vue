@@ -3,19 +3,24 @@
     <h3>{{ fullName }}</h3>
     <h4>${{ rate }}/hour</h4>
     <div>
-      <span v-for="area in areas" :key="area">
+      <base-babge v-for="area in areas" :key="area" :title="area" :type="area">
         {{ area }}
-      </span>
+      </base-babge>
     </div>
     <div class="actions">
-      <router-link :to="coachContactLink">Contact</router-link>
-      <router-link :to="coachDeilsLink">View Details</router-link>
+      <base-button mode="outline" link :to="coachContactLink"
+        >Contact</base-button
+      >
+      <base-button link :to="coachDeilsLink">View Details</base-button>
     </div>
   </li>
 </template>
 
 <script>
+import BaseBabge from '../ui/BaseBabge.vue';
+import BaseButton from '../ui/BaseButton.vue';
 export default {
+  components: { BaseButton, BaseBabge },
   props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
   computed: {
     fullName() {
