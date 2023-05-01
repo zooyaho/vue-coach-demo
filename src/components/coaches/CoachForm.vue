@@ -39,6 +39,7 @@
 
 <script>
 export default {
+  emits: ['save-data'],
   data() {
     return {
       firstName: '',
@@ -59,6 +60,8 @@ export default {
       };
 
       console.log('formData: ', formData);
+      // 검증
+      this.$emit('save-data', formData);
     },
   },
 };
@@ -111,6 +114,7 @@ h3 {
   font-size: 1rem;
 }
 
+/* 양식 검증 스타일링 */
 .invalid label {
   color: red;
 }

@@ -4,7 +4,7 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline">새로고침</base-button>
-        <base-button link to="/register">코치 등록</base-button>
+        <base-button v-if="!isCoach" link to="/register">코치 등록</base-button>
       </div>
       <ul v-if="hasCoaches">
         <CoachItem
@@ -38,6 +38,9 @@ export default {
     };
   },
   computed: {
+    isCoach() {
+      return this.$store.getters['coaches/isCoach'];
+    },
     filteredCoaches() {
       const coaches = this.$store.getters['coaches/coaches'];
       return coaches.filter((coach) => {
