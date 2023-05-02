@@ -11,4 +11,13 @@ export default {
     const userId = rootGetters.userId;
     return coaches.some((coach) => coach.id === userId);
   },
+  shouldUpdate(state) {
+    const lastFetch = state.lastFetch;
+    if (!lastFetch) {
+      return true; // 업데이트를 수락한다.
+    }
+    const currentTimeStamp = new Date().getTime();
+    // 1분이 지났으면 fetch
+    return (currentTimeStamp - lastFetch) / 1000 > 60;
+  },
 };

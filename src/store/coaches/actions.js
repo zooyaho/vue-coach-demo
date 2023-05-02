@@ -32,7 +32,11 @@ export default {
       id: userId,
     });
   },
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    // 새로고침 버튼이 있기 때문에
+    // 언제든지 새로고침 할수있게 forceRefrech를 설정한다.
+    if (payload.forceRefrech && !context.getters.shouldUpdate) return;
+
     const response = await fetch(
       `https://vue-http-b19e2-default-rtdb.firebaseio.com/coaches.json`
     );
@@ -57,5 +61,6 @@ export default {
     }
 
     context.commit('setCoaches', coaches);
+    context.commit('setFetchTimestamp');
   },
 };

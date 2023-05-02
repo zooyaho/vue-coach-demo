@@ -4,6 +4,7 @@ import actions from './actions';
 
 export default {
   namespaced: true,
+  lastStemp: null,
   state() {
     return {
       coaches: [

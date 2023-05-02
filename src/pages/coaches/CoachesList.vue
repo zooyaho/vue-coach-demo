@@ -7,7 +7,9 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline" @click="loadCoaches">새로고침</base-button>
+        <base-button mode="outline" @click="loadCoaches(true)"
+          >새로고침</base-button
+        >
         <base-button v-if="!isCoach && !isLoading" link to="/register"
           >코치 등록</base-button
         >
@@ -81,10 +83,13 @@ export default {
     setFilters(updatedFiltes) {
       this.activeFilters = updatedFiltes;
     },
-    async loadCoaches() {
+    async loadCoaches(refresh = false) {
+      // refresh 기본값을 false로 설정하여 created(컴포넌트 생성 시 해당 데이터 fetch)
       this.isLoading = true;
       try {
-        await this.$store.dispatch('coaches/loadCoaches');
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forceRefresh: refresh,
+        });
       } catch (error) {
         // 모달을 통한 오류 메시지 표시
         this.error = error.message || '오류가 발생 했습니다!';
@@ -96,7 +101,7 @@ export default {
     },
   },
   created() {
-    this.loadCoaches();
+    this.loadCoaches(true);
   },
 };
 </script>
