@@ -1,4 +1,8 @@
 <template>
+  <base-dialog :show="!!error" title="오류가 발생!!" @close="handleError">
+    <!-- 콘텐츠 섹션 -->
+    <p>{{ error }}</p>
+  </base-dialog>
   <coach-filter @change-filter="setFilters"> </coach-filter>
   <section>
     <base-card>
@@ -36,6 +40,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      error: null,
       activeFilters: {
         frontend: true,
         backend: true,
@@ -78,8 +83,16 @@ export default {
     },
     async loadCoaches() {
       this.isLoading = true;
-      await this.$store.dispatch('coaches/loadCoaches');
+      try {
+        await this.$store.dispatch('coaches/loadCoaches');
+      } catch (error) {
+        // 모달을 통한 오류 메시지 표시
+        this.error = error.message || '오류가 발생 했습니다!';
+      }
       this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
     },
   },
   created() {
