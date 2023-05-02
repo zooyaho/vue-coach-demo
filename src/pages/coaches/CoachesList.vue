@@ -3,10 +3,15 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline">새로고침</base-button>
-        <base-button v-if="!isCoach" link to="/register">코치 등록</base-button>
+        <base-button mode="outline" @click="loadCoaches">새로고침</base-button>
+        <base-button v-if="!isCoach && !isLoading" link to="/register"
+          >코치 등록</base-button
+        >
       </div>
-      <ul v-if="hasCoaches">
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      <ul v-else-if="hasCoaches">
         <CoachItem
           v-for="coach in filteredCoaches"
           :key="coach.id"
@@ -30,6 +35,7 @@ export default {
   components: { CoachItem, CoachFilter },
   data() {
     return {
+      isLoading: false,
       activeFilters: {
         frontend: true,
         backend: true,
@@ -43,6 +49,7 @@ export default {
     },
     filteredCoaches() {
       const coaches = this.$store.getters['coaches/coaches'];
+
       return coaches.filter((coach) => {
         if (this.activeFilters.frontend && coach.areas.includes('frontend')) {
           return true;
@@ -61,13 +68,22 @@ export default {
       });
     },
     hasCoaches() {
-      return this.$store.getters['coaches/hasCoaches'];
+      // 로딩 중에는 목록을 표시하지 않으니까
+      return !this.isLoading && this.$store.getters['coaches/hasCoaches'];
     },
   },
   methods: {
     setFilters(updatedFiltes) {
       this.activeFilters = updatedFiltes;
     },
+    async loadCoaches() {
+      this.isLoading = true;
+      await this.$store.dispatch('coaches/loadCoaches');
+      this.isLoading = false;
+    },
+  },
+  created() {
+    this.loadCoaches();
   },
 };
 </script>
